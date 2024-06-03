@@ -5,12 +5,6 @@ import { Document } from 'mongoose';
 export class Estacionamento {
   @Prop()
   placa: string;
-
-  @Prop({ type: Date, default: Date.now })
-  entrada: Date;
-
-  @Prop({ type: Date })
-  saida?: Date;
 }
 
 export const EstacionamentoSchema =

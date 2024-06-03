@@ -5,14 +5,6 @@ import {
   Estacionamento,
   EstacionamentoDocument,
 } from '../schemas/estacionamento.schema';
-
-@Injectable()
-export class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
-}
-
 @Injectable()
 export class EstacionamentoService {
   constructor(
@@ -21,7 +13,7 @@ export class EstacionamentoService {
   ) {}
 
   async criarEstacionamento(placa: string) {
-    const novoEstacionamento = new this.estacionamentoModel({ placa });
-    return novoEstacionamento.save();
+    const novaPlaca = new this.estacionamentoModel({ placa });
+    return novaPlaca.save();
   }
 }

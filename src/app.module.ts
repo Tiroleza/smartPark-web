@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { EstacionamentoController } from './app.controller'; // Fix import statement
-import { EstacionamentoService } from './app.service'; // Remove unused import
-import { DatabaseModule } from '../src/database/database.module';
-import { EstacionamentoSchema } from '../schemas/estacionamento.schema';
+import { EstacionamentoController } from './app.controller';
+import { EstacionamentoService } from './app.service';
+import { DatabaseModule } from './database/database.module';
 import { MongooseModule } from '@nestjs/mongoose';
-
+import { EstacionamentoSchema } from '../schemas/estacionamento.schema';
 @Module({
   imports: [
     DatabaseModule,
@@ -16,6 +15,3 @@ import { MongooseModule } from '@nestjs/mongoose';
   providers: [EstacionamentoService],
 })
 export class AppModule {}
-export class CriarEstacionamentoDto {
-  placa: string;
-}
