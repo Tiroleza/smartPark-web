@@ -6,6 +6,7 @@ import {
   ValidationPipe,
   HttpException,
   HttpStatus,
+  Get,
 } from '@nestjs/common';
 import { EstacionamentoService } from './app.service';
 import { PlacaDto } from './dto/criar-estacionamento.dto';
@@ -26,7 +27,6 @@ export class EstacionamentoController {
 
       return estacionamento;
     } catch (error) {
-      // Tratamento de erros (opcional)
       if (error instanceof HttpException) {
         throw error;
       } else {
@@ -35,6 +35,22 @@ export class EstacionamentoController {
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
+    }
+  }
+
+  @Get('/listar-placas')
+  async listarPlacas() {
+    try {
+      const placas = await this.estacionamentoService.listarEstacionamentos();
+      return {
+        message: 'Placas listadas com sucesso',
+        data: placas,
+      };
+    } catch (error) {
+      throw new HttpException(
+        'Erro ao listar placas',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }

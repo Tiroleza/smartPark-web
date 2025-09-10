@@ -5,6 +5,7 @@ import {
   Estacionamento,
   EstacionamentoDocument,
 } from '../schemas/estacionamento.schema';
+import { PlacaDto } from './dto/criar-estacionamento.dto';
 @Injectable()
 export class EstacionamentoService {
   constructor(
@@ -15,5 +16,14 @@ export class EstacionamentoService {
   async criarEstacionamento(placa: string) {
     const novaPlaca = new this.estacionamentoModel({ placa });
     return novaPlaca.save();
+  }
+  async listarEstacionamentos(): Promise<PlacaDto[]> {
+    const estacionamentos = await this.estacionamentoModel
+      .find()
+      .sort({ entrada: 1 })
+      .exec();
+    return estacionamentos.map((estacionamento) => ({
+      placa: estacionamento.placa,
+    }));
   }
 }
