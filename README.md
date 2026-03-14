@@ -1,4 +1,4 @@
-# SmartPark API
+# 🅿️ SmartPark API
 
 API REST para registro de veículos em estacionamentos. Valida placas nos padrões brasileiro (antigo e Mercosul) e persiste os registros em banco de dados MongoDB.
 
