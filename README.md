@@ -1,85 +1,128 @@
-# 🅿️ SmartPark API
+# SmartPark API
 
-API REST para gerenciamento inteligente de estacionamentos, construída com [NestJS](https://nestjs.com/) e [MongoDB](https://www.mongodb.com/).
+API REST para registro de veículos em estacionamentos. Valida placas nos padrões brasileiro (antigo e Mercosul) e persiste os registros em banco de dados MongoDB.
 
-## Funcionalidades
+Construída com [NestJS](https://nestjs.com/) v10 e [Mongoose](https://mongoosejs.com/) como ODM.
 
-- **Registro de veículos** — Cadastra placas de veículos no estacionamento
-- **Validação de placas** — Aceita placas nos padrões brasileiro antigo (ABC-1234) e Mercosul (ABC1D23)
-- **Validação de entrada** — Rejeita automaticamente dados inválidos com mensagens de erro claras
+## Stack técnica
 
-## Tecnologias
+| Camada | Tecnologia | Versão |
+|--------|-----------|--------|
+| Runtime | Node.js | ≥ 18 |
+| Framework | NestJS | 10.x |
+| Linguagem | TypeScript | 5.x |
+| Banco de dados | MongoDB (Atlas) | — |
+| ODM | Mongoose | 8.x |
+| Validação | class-validator + class-transformer | 0.14 / 0.5 |
+| Configuração | @nestjs/config (dotenv) | 4.x |
 
-- **NestJS** v10 — Framework Node.js progressivo
-- **MongoDB Atlas** — Banco de dados NoSQL na nuvem
-- **Mongoose** — ODM para modelagem de dados
-- **class-validator** — Validação de DTOs via decorators
-- **TypeScript** — Tipagem estática
+## Arquitetura
 
-## Pré-requisitos
+```
+src/
+├── main.ts                           # Entrypoint — bootstrap, CORS, ValidationPipe global
+├── app.module.ts                     # Módulo raiz — ConfigModule (global), DatabaseModule, feature modules
+├── app.controller.ts                 # Controller — POST /estacionamentos
+├── app.service.ts                    # Service — lógica de persistência
+├── database/
+│   └── database.module.ts            # Conexão assíncrona com MongoDB via ConfigService
+├── dto/
+│   └── criar-estacionamento.dto.ts   # DTO com validação de placa via regex
+└── test/
+    └── app.controller.spec.ts        # Testes unitários do controller
 
-- Node.js ≥ 18
-- npm ≥ 9
-- Conta no [MongoDB Atlas](https://www.mongodb.com/atlas) (ou instância MongoDB local)
+schemas/
+└── estacionamento.schema.ts          # Schema Mongoose — collection "estacionamentos"
+
+test/
+├── app.e2e-spec.ts                   # Teste end-to-end
+└── jest-e2e.json                     # Configuração Jest para e2e
+```
+
+### Fluxo de uma requisição
+
+```
+Client → POST /estacionamentos { "placa": "ABC1D23" }
+  │
+  ├─ ValidationPipe (global) → whitelist, forbidNonWhitelisted, transform
+  │
+  ├─ PlacaDto → @IsString() + @Length(7) + @Matches(regex)
+  │     Regex aceita: AAA-9999 (antigo) ou AAA9A99 (Mercosul)
+  │     Rejeita com 400 Bad Request se inválido
+  │
+  ├─ EstacionamentoController.criar()
+  │     try/catch → re-throw HttpException ou 500 genérico
+  │
+  ├─ EstacionamentoService.criarEstacionamento(placa)
+  │     new this.estacionamentoModel({ placa }).save()
+  │
+  └─ MongoDB → insert na collection "estacionamentos"
+       Retorna documento salvo com _id
+```
 
 ## Configuração
 
-1. Clone o repositório:
+### 1. Clonar e instalar
+
 ```bash
 git clone https://github.com/Tiroleza/smartPark-api.git
 cd smartPark-api
-```
-
-2. Instale as dependências:
-```bash
 npm install
 ```
 
-3. Configure as variáveis de ambiente:
+### 2. Variáveis de ambiente
+
 ```bash
 cp .env.example .env
 ```
 
-Edite o arquivo `.env` com suas credenciais:
-```env
-MONGODB_URI=mongodb+srv://<usuario>:<senha>@<cluster>.mongodb.net/?retryWrites=true&w=majority
-PORT=3000
-CORS_ORIGIN=http://localhost:3000
-```
+Edite `.env` com suas credenciais:
 
-## Executando
+| Variável | Descrição | Exemplo |
+|----------|-----------|---------|
+| `MONGODB_URI` | Connection string do MongoDB Atlas | `mongodb+srv://user:pass@cluster.mongodb.net/...` |
+| `PORT` | Porta do servidor HTTP | `3000` |
+| `CORS_ORIGIN` | Origem permitida para CORS | `http://localhost:5173` |
+
+### 3. Executar
 
 ```bash
-# modo desenvolvimento (com hot-reload)
+# Desenvolvimento (hot-reload)
 npm run start:dev
 
-# modo produção
+# Produção
 npm run build
 npm run start:prod
 ```
 
-A API estará disponível em `http://localhost:3000`.
-
-## Endpoints
+## API
 
 ### `POST /estacionamentos`
 
-Registra a placa de um veículo no estacionamento.
+Registra a placa de um veículo.
 
-**Request body:**
-```json
+**Request:**
+
+```http
+POST /estacionamentos
+Content-Type: application/json
+
 {
   "placa": "ABC1D23"
 }
 ```
 
-**Formatos aceitos:**
-| Padrão | Formato | Exemplo |
-|--------|---------|---------|
-| Antigo | `AAA-9999` | `ABC-1234` |
-| Mercosul | `AAA9A99` | `ABC1D23` |
+**Formatos de placa aceitos:**
 
-**Resposta de sucesso (201):**
+| Padrão | Regex | Exemplo |
+|--------|-------|---------|
+| Antigo | `^[A-Z]{3}-?\d{4}$` | `ABC-1234` ou `ABC1234` |
+| Mercosul | `^[A-Z]{3}\d{1}[A-Z]{1}\d{2}$` | `ABC1D23` |
+
+> A placa deve ter exatamente 7 caracteres.
+
+**Resposta `201 Created`:**
+
 ```json
 {
   "_id": "664d...",
@@ -88,7 +131,8 @@ Registra a placa de um veículo no estacionamento.
 }
 ```
 
-**Resposta de erro (400):**
+**Resposta `400 Bad Request`:**
+
 ```json
 {
   "statusCode": 400,
@@ -97,37 +141,43 @@ Registra a placa de um veículo no estacionamento.
 }
 ```
 
+**Resposta `500 Internal Server Error`:**
+
+```json
+{
+  "statusCode": 500,
+  "message": "Erro ao registrar a placa"
+}
+```
+
 ## Testes
 
 ```bash
-# testes unitários
+# Unitários
 npm run test
 
-# testes e2e
+# End-to-end
 npm run test:e2e
 
-# cobertura de testes
+# Cobertura
 npm run test:cov
 ```
 
-## Estrutura do projeto
+## Scripts disponíveis
 
-```
-src/
-├── app.module.ts              # Módulo raiz da aplicação
-├── app.controller.ts          # Controller de estacionamentos
-├── app.service.ts             # Serviço de estacionamentos
-├── main.ts                    # Bootstrap da aplicação
-├── database/
-│   └── database.module.ts     # Configuração do MongoDB
-├── dto/
-│   └── criar-estacionamento.dto.ts  # Validação de entrada
-└── test/
-    └── app.controller.spec.ts # Testes unitários
-schemas/
-└── estacionamento.schema.ts   # Schema do Mongoose
-```
+| Script | Descrição |
+|--------|-----------|
+| `npm run start` | Inicia em modo single-run |
+| `npm run start:dev` | Inicia com hot-reload (watch mode) |
+| `npm run start:debug` | Inicia com debugger + watch |
+| `npm run start:prod` | Inicia a build de produção (`dist/main`) |
+| `npm run build` | Compila TypeScript para `dist/` |
+| `npm run lint` | Executa ESLint com auto-fix |
+| `npm run format` | Formata código com Prettier |
+| `npm run test` | Executa testes unitários |
+| `npm run test:e2e` | Executa testes end-to-end |
+| `npm run test:cov` | Executa testes com relatório de cobertura |
 
 ## Licença
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+[MIT](LICENSE)
