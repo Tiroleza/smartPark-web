@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking - Tempo Médio de Permanência</title>
+    <link rel="icon" type="image/png" href="images/circulacoes.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url(images/background1.png);
+            background-size: cover;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #f7f7f7;
+            color: #000000;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 150px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: #0056b3;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            font-size: 28px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card span {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            background-color: #0056b3;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .menu a:hover {
+            background-color: #004191;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                font-size: 24px;
+                padding: 20px;
+            }
+
+            .card span {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <a href="index.html">
+                <img src="images/logo1.png" alt="Logo" class="logo" >
+              </a>
+              
+        </div>
+        <h1>Métricas de Permanência Semanal</h1>
+        <nav class="menu">
+            <a href="dashboard.html">Voltar</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>TEMPO MÉDIO DE PERMANÊNCIA EM HORAS</h1>
+        <div class="grid">
+            <div class="card">
+                <span>Segunda - Feira</span>
+                <div>9:10h</div>
+            </div>
+            <div class="card">
+                <span>Terça - Feira</span>
+                <div>12h</div>
+            </div>
+            <div class="card">
+                <span>Quarta - Feira</span>
+                <div>10:55h</div>
+            </div>
+            <div class="card">
+                <span>Quinta - Feira</span>
+                <div>8:15h</div>
+            </div>
+            <div class="card">
+                <span>Sexta - Feira</span>
+                <div>7:50h</div>
+            </div>
+            <div class="card">
+                <span>Sábado</span>
+                <div>4:10h</div>
+            </div>
+            <div class="card">
+                <span>Domingo</span>
+                <div>3:45h</div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <img src="images/logo1negativo.png" alt="logo" class="logo">
+        <p>Desenvolvedores: Felipe Tiroleza, Henrique Ribeiro e Rafael Elias</p>
+        <p>&copy; 2024 Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>

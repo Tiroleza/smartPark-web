@@ -1,0 +1,76 @@
+/* style.css */
+
+body {
+  font-family: sans-serif;
+  background-color: #fff; /* Fundo branco */
+  color: #000; /* Texto preto */
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#placa-input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#add-button {
+  padding: 10px 20px;
+  background-color: #3399ff; /* Cor azul do Spotify */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.saved-plates-list {
+  margin-top: 20px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+#plates-list {
+  list-style: none;
+  padding: 0;
+}
+
+#plates-list li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.car-icon {
+  margin-right: 10px;
+}
+
+#back-to-top-button {
+  display: block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #3399ff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+}

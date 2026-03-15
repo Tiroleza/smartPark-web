@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking - Editar Vagas</title>
+    <link rel="icon" type="image/png" href="images/circulacoes.png">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url(images/background1.png);
+            background-size: cover;
+            color: #000000;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #f7f7f7;
+            color: #000000;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            width: 200px;
+        }
+
+        .container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .number-input {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .number-input button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .number-input button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .number-input input {
+            width: 80px;
+            padding: 10px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            font-size: 18px;
+        }
+
+        .salvar-btn {
+            font-size: 18px;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .salvar-btn:hover {
+            background-color: #367C39;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            background-color: #0056b3;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .menu a:hover {
+            background-color: #004191;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <a href="index.html">
+                <img src="images/logo1.png" alt="Logo" class="logo" >
+              </a>
+              
+        </div>
+        <h1>Editar Vagas</h1>
+        <nav class="menu">
+            <a href="vagas.html">Voltar</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>INSIRA A QUANTIDADE TOTAL DE VAGAS DO ESTACIONAMENTO</h1>
+        <div class="number-input">
+            <button id="decrement">-</button>
+            <input type="number" id="number" value="0" min="0">
+            <button id="increment">+</button>
+        </div>
+        <button class="salvar-btn">Salvar</button>
+    </div>
+    <footer>
+        <img src="images/logo1negativo.png" alt="logo" class="logo">
+        <p>Desenvolvedores: Felipe Tiroleza, Henrique Ribeiro e Rafael Elias</p>
+        <p>&copy; 2024 Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        const decrementButton = document.getElementById('decrement');
+        const incrementButton = document.getElementById('increment');
+        const numberInput = document.getElementById('number');
+
+        decrementButton.addEventListener('click', () => {
+            numberInput.value = parseInt(numberInput.value) - 1;
+            updateButtons();
+        });
+
+        incrementButton.addEventListener('click', () => {
+            numberInput.value = parseInt(numberInput.value) + 1;
+            updateButtons();
+        });
+
+        numberInput.addEventListener('input', updateButtons);
+
+        function updateButtons() {
+            decrementButton.disabled = numberInput.value <= 0;
+        }
+
+        updateButtons();
+    </script>
+</body>
+</html>

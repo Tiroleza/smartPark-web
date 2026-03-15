@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placas de Carro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html">
+            <img src="images/logo1.png" alt="Logo" class="logo" >
+          </a>
+          
+        
+        <link rel="icon" type="image/png" href="images/circulacoes.png" />
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-image: url(images/background1.png);
+                background-size: cover;
+                color: #0e0b0b;
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+            }
+    
+            header {
+                background-color: rgba(247, 247, 247, 0.9);
+                color: #000000;
+                padding: 15px;
+                text-align: center;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+    
+            .logo {
+                width: 200px;
+            }
+    
+            .container {
+                flex-grow: 1;
+                max-width: 1200px;
+                margin: 20px auto;
+                padding: 0 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+    
+            .dashboard {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+                width: 100%;
+            }
+            
+            .card {
+                background-color: rgba(51, 51, 51, 0.9);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                text-align: center;
+                transition: transform 0.3s;
+            }
+    
+            .card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            }
+    
+            .card h2 {
+                margin-top: 10px;
+                font-size: 1.5em;
+                color: #F4A261;
+            }
+    
+            .car-image, .chart {
+                max-width: 80%;
+                height: auto;
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+    
+            .menu {
+                display: flex;
+                gap: 15px;
+            }
+    
+            .menu a {
+                color: #fff;
+                text-decoration: none;
+                padding: 10px 20px;
+                background-color: #0056b3;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+    
+            .menu a:hover {
+                background-color: #004191;
+            }
+    
+            footer {
+                background-color: #333;
+                color: white;
+                padding: 10px;
+                text-align: center;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            }
+            
+            .footer img {
+                width: 100px;
+            }
+    
+            @media (max-width: 600px) {
+                .menu a {
+                    padding: 8px 16px;
+                }
+            }
+        </style>
+        </header>
+
+    <div class="container">
+        <h1>Placas de Carro</h1>
+        <div class="input-area"></div>
+        <form id="formularioEstacionamento" method="POST" action="/registrar-placa">
+            
+            <input type="text" id="placa-input" placeholder="Digite a placa do carro">
+            <button id="add-button">Adicionar</button>
+        </form>
+        </div>
+
+        <div class="saved-plates-list">
+            <h2>Placas Salvas</h2>
+            <ul id="plates-list">
+                </ul>
+        </div>
+       
+      <button> <a id="back-to-top-button" href="dashboard.html">Voltar</a> </button>
+
+    </div>
+
+    <script src="inserirPlacas.js"></script>
+</body>
+</html>
